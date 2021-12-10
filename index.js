@@ -5,9 +5,9 @@ const app = express();
 const port = 5000;
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const config = require("./config/key");
-const { User } = require("./models/User");
-const { auth } = require("./middleware/auth");
+const config = require("./server/config/key");
+const { User } = require("./server/models/User");
+const { auth } = require("./server/middleware/auth");
 
 //application/x-www-form-urlencoded 위 데이터를 분석해 가져올 수 있게 하는 것
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,6 +25,10 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+app.get("/api/hello", (req, res) => {
+  res.send("Hello, world!");
+});
+
 //회원 가입 route
 app.post("/api/users/register", (req, res) => {
   //회원 가입 할때 필요한 정보를 client에서 가져오면
@@ -39,7 +43,7 @@ app.post("/api/users/register", (req, res) => {
 });
 
 //login route
-app.post("/login", (req, res) => {
+app.post("/api/users/login", (req, res) => {
   //요청된 이메일을 DB에서 있는지 찾아야 한다.
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user) {
